@@ -1,0 +1,148 @@
+
+import java.util.Arrays;
+
+public class ArraysBag<T> {
+    private static final int DEFAULT_CAPACITY = 10;
+    private T[] array;
+    private int size;
+
+
+    public ArraysBag() {
+        this(DEFAULT_CAPACITY);
+    }
+
+    public ArraysBag(int desired_capacity) {
+        T[] temp = (T[]) new Object[desired_capacity];
+        array = temp;
+        size = 0;
+
+    }
+
+    public void add(T entry) {
+        if (size == array.length) {
+            array = Arrays.copyOf(array, 2 * size);
+        }
+        array[size] = entry;
+        size++;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void insertFirst(T entry) {
+        for (int i = size - 1; i >= 0; i--) {
+            array[i + 1] = array[i];
+        }
+        array[0] = entry;
+        size++;
+
+    }
+
+    public T get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index is out of range");
+        }
+        return array[index];
+
+    }
+
+    public void set(int index, T newItem) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index out of bound");
+        }
+        array[index] = newItem;
+
+    }
+
+
+//    // create a new bag to copy the colors to
+//    ColorBag<String> bag2 = new ColorBag<String>();
+//
+//    // copy the colors from bag1 to bag2
+//    T[] colors = bag1.toArray();
+//        for (T color : colors) {
+//        bag2.add(color);
+//    }
+
+    public void reverse() {
+        int i = 0;
+        int j = size - 1;
+        while (i < j) {
+            T temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+            i++;
+            j--;
+        }
+    }
+
+    public boolean equals(ArraysBag<T> other) {
+        if (size != other.size) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (!array[i].equals(other.array[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void swap(int index1, int index2) {
+        if (index1 < 0 || index1 >= size && index2 < 0 || index2 >= size) {
+            throw new IndexOutOfBoundsException("Index out of bound");
+        }
+        T temp = array[index1];
+        array[index1] = array[index2];
+        array[index2] = temp;
+    }
+
+    public void join(ArraysBag<T> other) {
+        for (int i = 0; i < other.size; i++) {
+            add(other.get(i));
+        }
+    }
+
+    public void clear() {
+        Arrays.fill(array, null);
+        size = 0;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    private void expandArray() {
+        int newCapacity = array.length * 2;
+        array = Arrays.copyOf(array, newCapacity);
+
+    }
+
+    public boolean contains(T entry) {
+        for (int i = 0; i < size; i++) {
+            if (array[i].equals(entry)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void replace(T oldItem, T newItem) {
+        for (int i = 0; i < size; i++) {
+            if (array[i].equals(oldItem)) {
+                array[i] = newItem;
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Item not found in bag");
+    }
+
+    public T[] toArray() {
+        return Arrays.copyOf(array, size);
+    }
+//    // print out the collection of colors again
+//        System.out.println("Colors in bag (after reversal):");
+//        for (String c : bag.toArray()) {
+//        System.out.println(c);
+}
