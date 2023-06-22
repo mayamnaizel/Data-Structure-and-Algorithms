@@ -1,0 +1,89 @@
+public class TreeClass<T> {
+    private T data;
+    private TreeClass<T> leftChild;
+    private TreeClass<T> rightChild;
+
+    public TreeClass() {
+        this(null);
+
+    }
+
+    public TreeClass(T data) {
+        this(data, null, null);
+    }
+
+    public TreeClass(T data, TreeClass<T> leftChild, TreeClass<T> rightChild) {
+        this.data = data;
+        this.leftChild = leftChild;
+        this.rightChild = rightChild;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public TreeClass<T> getLeftChild() {
+        return leftChild;
+    }
+
+    public TreeClass<T> getRightChild() {
+        return rightChild;
+    }
+
+    public void setLeftChild(TreeClass<T> leftChild) {
+        this.leftChild = leftChild;
+    }
+
+    public void setRightChild(TreeClass<T> rightChild) {
+        this.rightChild = rightChild;
+    }
+
+    public boolean hasLeftChild() {
+        return leftChild != null;
+    }
+
+    public boolean hasRightChild() {
+        return rightChild != null;
+    }
+
+    public boolean isLeaf() {
+        return !hasLeftChild() && !hasRightChild();
+    }
+
+    public T getRootData() {
+        return null;
+    }
+
+    public int getHeight(TreeClass<T> root) {
+        int height = 0;
+        if (root != null) {
+            height = 1 + Math.max(getHeight(root.leftChild), getHeight(root.rightChild));
+        }
+        return height;
+    }
+
+    public int getNumberOfNodes() {
+        int leftChildNode = 0;
+        int rightChildNode = 0;
+        if (leftChild != null) {
+            leftChildNode = leftChild.getNumberOfNodes();
+        }
+        if (rightChild != null) {
+            rightChildNode = rightChild.getNumberOfNodes();
+        }
+        return 1 + leftChildNode + rightChildNode;
+    }
+
+    public int getNumberOfNodes(TreeClass<T> root) {
+        if (root == null) {
+            return 0;
+        } else return 1 + getNumberOfNodes(root.leftChild) + getNumberOfNodes(root.rightChild);
+    }
+
+ 
+
+}
