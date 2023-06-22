@@ -1,0 +1,196 @@
+import java.util.NoSuchElementException;
+
+public class Queues<T> {
+    private Node head;
+    private Node tail;
+
+    private class Node {
+        T item;
+        Node next;
+
+        public Node(T item) {
+            this.item = item;
+        }
+
+        public T getItem() {
+            return item;
+        }
+
+        public void setItem(T item) {
+            this.item = this.item;
+        }
+    }
+
+    public void enqueue(T entry) {
+        Node newNode = new Node(entry);
+        if (tail == null) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    public T dequeue() {
+        if (head == null) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        T data = head.item; //get the first item in the queue
+        head = head.next;//Update the `head` variable to point to the next element in the queue
+        if (head == null) tail = null;//if there is no head the tail is null too
+        return data;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public T peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is Empty");
+        }
+        return head.item;
+    }
+
+    public int size() {
+        int count = 0;
+        Node current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
+    }
+
+    public void clear() {
+        head = null;
+        tail = null;
+    }
+
+    public T[] toArray() {
+        T[] array = (T[]) new Object[size()];
+        int i = 0;
+        Node current = head;
+        while (current != null) {
+            array[i] = current.item;
+            i++;
+            current = current.next;
+        }
+        return array;
+    }
+
+    public boolean contains(T entry) {
+        Node current = head;
+        while (current != null) {
+            if (current.item.equals(entry)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    public boolean remove(T entry) {
+        Node current = head;
+        Node prev = null;
+        while (current != null) {
+            if (current.item.equals(entry)) {
+                if (prev == null) {
+                    head = current.next;
+                } else prev.next = current.next;
+                if (tail == current) tail = prev;
+                return true;
+            }
+            prev = current;
+            current = current.next;
+        }
+        return false;
+    }
+//
+//    public boolean isPalindrome() {
+//        if (isEmpty()) {
+//            return true;
+//        }
+//        Stack<T> stack = new Stack<>();
+//        Node slow = head;
+//        Node fast = head;
+//        boolean oddLength = false;
+//        while (fast != null) {
+//            stack.push(slow.item);
+//            slow = slow.next;
+//            fast = fast.next;
+//            if (fast != null) {
+//                fast = fast.next;
+//            } else oddLength = true;
+//        }
+//        if (oddLength) {
+//            slow = slow.next;
+//        }
+//        while (slow != null) {
+//            T data = stack.pop();
+//            if (!data.equals(slow.item)) {
+//                return false;
+//            }
+//            slow = slow.next;
+//        }
+//        return true;
+//    }
+
+    public void reverse() {
+        Node current = head;
+        Node prev = null;
+        Node next = null;
+        while (current != null) {
+            next = current.next;
+            /*Inside the while loop, set `next` to the next node after `current`.
+             This is necessary because we are about to change the `current.next` pointer,
+             and we need to store the original value so we can continue traversing the list.*/
+            current.next = prev;
+            /*Reverse the direction of the `current.next` pointer to point to the previous node.
+             This effectively "disconnects" `current` from the list and connects it to the previous node.
+*/
+            prev = current;
+            current = next;
+        }
+        tail = head;
+        head = prev;
+    }
+
+    public void swap(int index1, int index2) {
+        if (index1 == index2) return;
+        Node node1 = null;
+        Node node2 = null;
+        Node current = head;
+        int count = 0;
+        while (current != null) {
+            if (count == index1) {
+                node1 = current;
+            } else if (count == index2) {
+                node2 = current;
+            }
+            current = current.next;
+            count++;
+        }
+        if (node1 != null && node2 != null) {
+            T temp = node1.getItem();
+            node1.setItem(node2.getItem());
+            node2.setItem(temp);
+
+
+        }
+    }
+
+    public void display() {
+        Node current = head;
+        if (isEmpty()) {
+            System.out.println("Queue is Empty");
+        } else {
+            while (current != null) {
+                System.out.println(current.item + " ");
+                current = current.next;
+            }
+            System.out.println();
+        }
+    }
+}
