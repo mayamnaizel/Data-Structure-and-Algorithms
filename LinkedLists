@@ -1,0 +1,300 @@
+
+public class LinkedLists<T> {
+    private Node head;
+    private int entries;
+
+    public boolean add(T entry) {
+        Node nextEntry = new Node(entry);
+        if (head == null) {
+            head = nextEntry;
+        } else {
+            Node current = head;
+            while (current.next != null) {
+                current = current.next;
+            }
+            current.next = nextEntry;
+            entries++;
+        }
+        return true;
+    }
+    public int size(){
+        return entries;
+    }
+
+
+    public void iterate() {
+        Node current = head;
+        while (current != null) {
+            System.out.println(current.item + " ");
+            current = current.next;
+        }
+    }
+
+    public T get(int index) {
+        T result = null;
+        if (index >= entries)
+            return result;
+        Node temp = head;
+        for (int i = 0; i <= index; i++) {
+            if (i == index)
+                result = temp.item;
+            else
+                temp = temp.next;
+        }
+        return result;
+    }
+
+
+    public void iterateFrom(int position) {
+        Node current = head;
+        for (int i = 0; i < position; i++) {
+            if (current == null) {
+                return;
+            }
+            current = current.next;
+        }
+        while (current != null) {
+            System.out.println(current.item + " ");
+            current = current.next;
+        }
+    }
+
+    public void iterateRev() {
+        Node current = head;
+        Node prev = null;
+        Node next = null;
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        while (prev != null) {
+            System.out.println(prev.item + " ");
+            prev = prev.next;
+        }
+    }
+
+    public void insert(T entry, int position) {
+        Node newNode = new Node(entry);
+        if (position == 1) {
+            newNode.next = head;
+            head = newNode;
+            return;
+        }
+        Node current = head;
+        for (int i = 1; i < position - 1; i++) {
+            if (current == null) {
+                System.out.println("Invalid Position");
+                return;
+            }
+            current = current.next;
+        }
+        newNode.next = current.next;
+        current.next = newNode;
+
+    }
+
+    public void addFirst(T entry) {
+        Node newNode = new Node(entry);
+        newNode.next = head;
+        head = newNode;
+    }
+
+    public void addLast(T entry) {
+        Node newNode = new Node(entry);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node current = head;
+        while (current != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+
+    public int getFirstOccurrence(T entry) {
+        Node current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.item.equals(entry)) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
+
+    public int getLastOccurrence(T entry) {
+        Node current = head;
+        int index = -1;
+        int i = 0;
+        while (current != null) {
+            if (current.item.equals(entry)) {
+                index = i;
+            }
+            current = current.next;
+            i++;
+        }
+        return index;
+    }
+
+    public void removeAt(T entry) {
+        if (head == null) return; //if there is no linked list
+        if (head.item.equals(entry)) { //if the item is the head
+            head = head.next;
+            return;
+        }
+        Node prev = head; //if the item is not the head
+        Node current = head.next;
+        while (current != null) {
+            if (current.item.equals(entry)) {
+                prev.next = current.next;
+                return;
+            }
+            prev = current;
+            current = current.next;
+        }
+    }
+
+    public void removeFirst(T entry) {
+        if (head == null) return;
+        head = head.next;
+    }
+
+    public void removeLast(T entry) {
+        if (head == null) return;
+        if (head.next == null) {
+            head = null;
+            return;
+        }
+        Node prev = head;
+        Node current = head.next;
+        while (current.next != null) {
+            prev = current;
+            current = current.next;
+        }
+        prev.next = null;
+    }
+
+    public void clearAll() {
+        head = null;
+    }
+
+    public void swap(T first, T second) {
+        if (first == second) return;
+        Node prev1 = null;
+        Node current1 = head;
+        while (current1 != null && current1.item != first) {
+            prev1 = current1;
+            current1 = current1.next;
+        }
+        Node prev2 = null;
+        Node current2 = head;
+        while (current2 != null && current2.item != second) {
+            prev2 = current2;
+            current2 = current2.next;
+        }
+        if (current1 == null || current2 == null) return;
+        if (prev1 != null) {
+            prev1.next = current2;
+        } else head = current2;
+        if (prev2 != null) {
+            prev2.next = current1;
+        } else head = current1;
+        Node temp = current1.next;
+        current1.next = current2.next;
+        current2.next = temp;
+    }
+
+    public void join(LinkedLists<T> list2) {
+        if (head == null) {
+            head = list2.head;
+        } else {
+            Node lastNode = head;
+            while (lastNode.next != null) {
+                lastNode = lastNode.next;
+            }
+            lastNode.next = list2.head;
+        }
+    }
+
+    public T getFirst() {
+        if (head == null) return null;
+        return head.item;
+    }
+
+    public T getLast() {
+        if (head == null) return null;
+        Node current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        return current.item;
+    }
+
+    public boolean contains(T entry) {
+        Node current = head;
+        while (current != null) {
+            if (current.item.equals(entry)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    public boolean equals(LinkedLists<T> list2) {
+        Node current1 = head;
+        Node current2 = list2.head;
+        while (current1 != null && current2 != null) {
+            if (!current1.item.equals(current2.item)) {
+                return false;
+            }
+            current1 = current1.next;
+            current2 = current2.next;
+        }
+        return current1 == null && current2 == null;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public void replace(T oldData, T newData) {
+        Node current = head;
+        while (current != null) {
+            if (current.item.equals(oldData)) {
+                current.item = newData;
+                break;
+            }
+            current = current.next;
+        }
+    }
+
+
+    public void display() {
+        Node current = head;
+        while (current != null) {
+            System.out.println(current.item + " ");
+            current = current.next;
+        }
+    }
+
+    private class Node {
+        T item;
+        Node next;
+
+        public Node(T item) {
+            this(item, null);
+        }
+
+        public Node(T item, Node next) {
+            this.item = item;
+            this.next = next;
+        }
+    }
+
+}
