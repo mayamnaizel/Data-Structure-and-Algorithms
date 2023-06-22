@@ -1,0 +1,17 @@
+public class HashingAscii {
+        public static int hash(String str) {
+            int hashValue = 0;
+            for (int i = 0; i < str.length(); i++) {
+                hashValue += (int) str.charAt(i);
+            }
+            return hashValue;
+        }
+
+        public static void main(String[] args) {
+            String input = "Hello, World!";
+            int hashedValue = hash(input);
+            System.out.println("Hashed value: " + hashedValue);
+        }
+    }
+
+
