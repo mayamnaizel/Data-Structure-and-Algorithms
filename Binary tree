@@ -1,0 +1,103 @@
+public class BinaryTree<T> {
+
+    BinaryTree<T> root;
+    private T data;
+    private BinaryTree<T> leftChild;
+    private BinaryTree<T> rightChild;
+
+    public BinaryTree() {
+        root = null;
+    }
+
+    public BinaryTree(T data) {
+        this.root = new BinaryTree<>(data);
+    }
+
+    public BinaryTree(BinaryTree<T> root) {
+        this.root = root;
+    }
+
+    public BinaryTree(T data, BinaryTree<T> leftChild, BinaryTree<T> rightChild) {
+        this.root = new BinaryTree<>(data);
+        if (leftChild.root != null) {
+            root.setLeftChild(leftChild.root);
+        }
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public BinaryTree<T> getLeftChild() {
+        return leftChild;
+    }
+
+    public BinaryTree<T> getRightChild() {
+        return rightChild;
+    }
+
+    public void setLeftChild(BinaryTree<T> leftChild) {
+        this.leftChild = leftChild;
+    }
+
+    public void setRightChild(BinaryTree<T> rightChild) {
+        this.rightChild = rightChild;
+    }
+
+    public boolean hasLeftChild() {
+        return leftChild != null;
+    }
+
+    public boolean hasRightChild() {
+        return rightChild != null;
+    }
+
+    public boolean isLeaf() {
+        return !hasLeftChild() && !hasRightChild();
+    }
+
+    public T getRootData() {
+        return null;
+    }
+
+    public int getHeight(TreeClass<T> root) {
+        int height = 0;
+        if (root != null) {
+            height = 1 + Math.max(getHeight(root.getLeftChild()), getHeight(root.getRightChild()));
+        }
+        return height;
+    }
+
+    public int getNumberOfNodes() {
+        int leftChildNode = 0;
+        int rightChildNode = 0;
+        if (leftChild != null) {
+            leftChildNode = leftChild.getNumberOfNodes();
+        }
+        if (rightChild != null) {
+            rightChildNode = rightChild.getNumberOfNodes();
+        }
+        return 1 + leftChildNode + rightChildNode;
+    }
+
+    public int getNumberOfNodes(TreeClass<T> root) {
+        if (root == null) {
+            return 0;
+        } else return 1 + getNumberOfNodes(root.getLeftChild()) + getNumberOfNodes(root.getRightChild());
+    }
+
+    public boolean isEmpty() {
+        return false;
+    }
+
+    public void clear() {
+    }
+
+}
+
+
+
