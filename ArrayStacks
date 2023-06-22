@@ -1,0 +1,142 @@
+public class StacksWithArrayBag<T> {
+    private static final int DEFAULT_CAPACITY = 25;
+    private T[] elements;
+    private int size;
+    private int top;
+
+    public StacksWithArrayBag() {
+        this(DEFAULT_CAPACITY);
+    }
+
+    @SuppressWarnings("unchecked")
+    public StacksWithArrayBag(int capacity) {
+        this.size = capacity;
+        elements = (T[]) new Object[capacity];
+        top = -1;
+    }
+
+    public void push(T entry) {
+        if (size == elements.length) { //if elements are equal to size then resize
+            resize(elements.length * 2);
+        } else {
+            top++;  //top = index[0] from -1
+            elements[top] = entry;
+        }
+    }
+
+    public T pop() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is Empty");
+        }
+        T element = elements[size--]; //remove the last size
+        elements[size] = null; //equal it to null
+        if (size > 0 && size == elements.length / 4) {
+            resize(elements.length / 2); //if size is quarter reduce to half
+        }
+        return element;
+    }
+
+    public T peek() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is Empty");
+        }
+        return elements[size - 1];
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    private void resize(int capacity) {
+        T[] copy = (T[]) new Object[capacity]; //make an object of T with capacity needed
+        for (int i = 0; i < size; i++) {
+            copy[i] = elements[i]; //copying the original to the copy array
+        }
+        elements = copy; //equal the original to the copy
+    }
+
+    public void reverse() {
+        T[] reverseArray = (T[]) new Object[size];
+        int i = 0;
+        while (!isEmpty()) {
+            reverseArray[i++] = pop();
+        }
+        for (int j = 0; j < i; j++) {
+            push(reverseArray[i]);
+        }
+    }
+
+    public void clear() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+
+    public boolean contains(T entry) {
+        for (int i = 0; i <= top; i++) {
+            if (elements[i].equals(entry)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public T peekBottom() {
+        if (top == -1) {
+            System.out.println("Stack is empty");
+            return null;
+        } else return elements[0];
+    }
+
+    public void remove(T entry) {
+        int i = 0;
+        while (i <= top) {
+            if (elements[i].equals(entry)) {
+                for (int j = 0; j < top; j++) {
+                    elements[j] = elements[j + 1];
+                }
+                elements[top] = null;
+                top--;
+                return;
+            }
+            i++;
+        }
+        System.out.println("Element not found");
+    }
+
+    public void swapTopTwo() {
+        if (top < 1) {
+            System.out.println("not enough elements");
+            return;
+        }
+        T topElem = pop();
+        T secElem = pop();
+        push(topElem);
+        push(secElem);
+    }
+
+    public T getElementFromTop(int n) {
+        if (top == -1) {
+            return null;
+        } else if (n > top + 1) {
+            return null;
+        } else return elements[top - n + 1];
+
+    }
+
+    public int size() {
+        return top + 1;
+    }
+
+    public void display() {
+        if (size == 0) {
+            System.out.println("Stack is Empty");
+        } else System.out.println("Stack elements: ");
+        for (int i = 0; i < elements.length; i++) {
+            System.out.println(elements[i] + " ");
+        }
+        System.out.println();
+
+    }
+
+}
